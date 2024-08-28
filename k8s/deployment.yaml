@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: supreme-logger-3000
+  namespace: stress-test
+  labels:
+    app: supreme-logger-3000
+spec:
+  replicas: 25
+  selector:
+    matchLabels:
+      app: supreme-logger-3000
+  template:
+    metadata:
+      labels:
+        app: supreme-logger-3000
+    spec:
+      nodeSelector:
+        group: stress-test
+      tolerations:
+        - key: stress-test
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+      containers:
+        - name: app
+          image: ghcr.io/romcheg/supreme-logger-3000:latest
